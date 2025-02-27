@@ -2,7 +2,7 @@ import random
 import sys
 
 from src.obj.BoardField import BoardField
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QPixmap
 
@@ -47,7 +47,7 @@ class Board(QtWidgets.QWidget):
         image_clicked = QPixmap("hex.png")
         field.setPixmap(image)
         field.setScaledContents(True)
-        field.mousePressEvent = field.setPixmap(image_clicked)
+        field.clicked.connect(field.setPixmap(image_clicked))
         field.show()
 
         return field
