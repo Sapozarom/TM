@@ -16,7 +16,7 @@ class UiBoard(QtWidgets.QWidget):
 
         self.resize(1000, 800)
 
-        # dimension must be multiplication of 4
+        # field_dimension must be multiplication of 4
         self.field_dimension = 76
         self.board_width = 800
         self.board_height = int(
