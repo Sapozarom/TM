@@ -55,7 +55,8 @@ class Parser():
                     block.append(line)
 
             if self.line_number == 300:
-                print("finished")
+                # print(self.game.number_of_players)
+                print(f"finished on line {self.line_number}")
                 break
 
             self.line_number += 1
@@ -99,14 +100,13 @@ class Parser():
             self.game = new_game
 
             # create event log path
-            # event_file_path = "eventLog/"
             event_log_file_name = f"{timestamp}_game_event_log.txt"
 
             self.set_event_log_file_path(event_log_file_name)
-            # create event record
-            f = open(f"{self.event_log_file_path}", "w")
-            f.write(f"{timestamp} | New Game Created\n")
-            f.close()
+
+            # event record
+            message = "New Game Created"
+            self.create_event_record(timestamp, message, "w")
 
             # print line parts
             self.print_line_parts(event_time, type_value,
@@ -114,9 +114,15 @@ class Parser():
         # initialyze players
         elif operation_value == "[GameData]" and not event.find("TM_PlayerBoardData for player") == -1:
 
-            f = open(f"{self.event_log_file_path}", "a")
-            f.write(f"{timestamp} | New Player Created\n")
-            f.close()
+            # event record
+            if event[-2].isnumeric():
+                player_number = int(event[-2])
+                self.game.add_player(player_number)
+                message = f"Player {player_number} created"
+            else:
+                message = f"Something went wrong while creating player in line |{self.line_number}"
+
+            self.create_event_record(timestamp, message)
 
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
@@ -124,7 +130,7 @@ class Parser():
         start_time = datetime.strptime(
             f"{date} {time}", "%Y-%m-%d %H:%M:%S")
 
-        return datetime.timestamp(start_time)
+        return int(datetime.timestamp(start_time))
 
     def print_line_parts(self, event_time, type_value, operation_value, event):
         print(f"Line: {self.line_number}")
@@ -135,3 +141,8 @@ class Parser():
 
     def set_event_log_file_path(self, file_name):
         self.event_log_file_path = f"{self.event_files_location}{file_name}"
+
+    def create_event_record(self, timestamp, message, mode="a"):
+        f = open(f"{self.event_log_file_path}", mode)
+        f.write(f"{timestamp} | {message}\n")
+        f.close()

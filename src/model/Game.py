@@ -37,7 +37,11 @@ class Game(ModelBase):
     def __init__(self, **kw):
         super().__init__(**kw)
 
-    def addPlayer(self, number):
+    def add_player(self, number):
         new_player = Player()
         new_player.number = number
         self.players.append(new_player)
+
+    @property
+    def number_of_players(self):
+        return len(self.players)
