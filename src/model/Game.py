@@ -34,6 +34,9 @@ class Game(ModelBase):
     # 1 = GAME_INITIALIZATION - part when players and board setup is created
     phase = "NOT_STARTED"
 
+    # number of player who currently takes action
+    current_player = 0
+
     def __init__(self, **kw):
         super().__init__(**kw)
 

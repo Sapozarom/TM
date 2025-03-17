@@ -14,15 +14,18 @@ from src.model.game import Game
 class Parser():
 
     file = open("logs/Player.log", "r")
+
     line_number = 1
     block_active = False
     game_in_progress = False
 
-    engine = create_engine("sqlite:///tmdb.db", echo=True)
-    session = Session(engine)
+    # engine = create_engine("sqlite:///tmdb.db", echo=True)
+    # session = Session(engine)
 
+    # path to event log
     event_files_location = "eventLog/"
     event_log_file_path = ""
+
     # current active game object to which the data is colected
     game: Game
 
