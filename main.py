@@ -1,6 +1,6 @@
 import sys
 
-from src.ui.UiBoard import UiBoard
+from src.ui.uiBoard import UiBoard
 from PyQt5 import QtWidgets
 
 from src.service.createDbTables.CreateDbTables import CreateDbTables

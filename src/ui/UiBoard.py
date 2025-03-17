@@ -1,5 +1,5 @@
 
-from src.obj.BoardField import BoardField
+from src.obj.boardField import BoardField
 from PyQt5.QtCore import QEvent
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
