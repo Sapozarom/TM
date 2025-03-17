@@ -22,7 +22,7 @@ class Parser():
     session = Session(engine)
 
     # current active game object to which the data is colected
-    game = Game()
+    game: Game
 
     block = []
 
@@ -88,7 +88,6 @@ class Parser():
 
             new_game = Game()
             new_game.phase = "GAME_INITIALIZATION"
-
             self.game = new_game
 
             # get timestamp
