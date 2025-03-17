@@ -21,6 +21,8 @@ class Parser():
     engine = create_engine("sqlite:///tmdb.db", echo=True)
     session = Session(engine)
 
+    event_files_location = "eventLog/"
+    event_log_file_path = ""
     # current active game object to which the data is colected
     game: Game
 
@@ -57,8 +59,8 @@ class Parser():
                 break
 
             self.line_number += 1
+
         # Close the file
-        # print(block)
         file.close()
 
     def analyze_line(self, line: str):
@@ -81,25 +83,29 @@ class Parser():
         event = line[timestamp_brackets +
                      type_bracket + operation_bracket:]
 
+        timestamp = self.get_timestamp_from_event_time(event_time)
+
         # start new game and create eventLog file
         if operation_value == "[Game Initialization]" and not event.find("Creating new Game") == -1 and not self.game_in_progress:
 
             self.game_in_progress = True
 
+            # get timestamp
+
+            # create new game object
             new_game = Game()
             new_game.phase = "GAME_INITIALIZATION"
+            new_game.start = timestamp
             self.game = new_game
 
-            # get timestamp
-            start_timestamp = self.get_timestamp_from_event_time(event_time)
-
             # create event log path
-            event_file_path = "eventLog/"
-            event_log_file_name = f"{start_timestamp}_game_event_log.txt"
+            # event_file_path = "eventLog/"
+            event_log_file_name = f"{timestamp}_game_event_log.txt"
 
+            self.set_event_log_file_path(event_log_file_name)
             # create event record
-            f = open(f"{event_file_path}{event_log_file_name}", "w")
-            f.write(f"{start_timestamp} | New Game Created\n")
+            f = open(f"{self.event_log_file_path}", "w")
+            f.write(f"{timestamp} | New Game Created\n")
             f.close()
 
             # print line parts
@@ -107,7 +113,10 @@ class Parser():
                                   operation_value, event)
         # initialyze players
         elif operation_value == "[GameData]" and not event.find("TM_PlayerBoardData for player") == -1:
-            pass
+
+            f = open(f"{self.event_log_file_path}", "a")
+            f.write(f"{timestamp} | New Player Created\n")
+            f.close()
 
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
@@ -123,3 +132,6 @@ class Parser():
         print(f"Type: {type_value}")
         print(f"Operation: {operation_value}")
         print(f"Event: {event}")
+
+    def set_event_log_file_path(self, file_name):
+        self.event_log_file_path = f"{self.event_files_location}{file_name}"
