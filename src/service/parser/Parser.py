@@ -59,7 +59,7 @@ class Parser():
 
             if self.line_number == 300:
                 # print(self.game.number_of_players)
-                print(self.game.players[0].terraforming_rating)
+                print(self.game.players[0])
                 print(f"finished on line {self.line_number}")
                 break
 

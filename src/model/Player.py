@@ -44,3 +44,13 @@ class Player(ModelBase):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+
+    def __repr__(self):
+        return f"Player {self.number}\n" \
+            f"TR: {self.terraforming_rating}\n" \
+            f"Mega Credit: {self.mega_credit} with production {self.mega_credit_prod}\n" \
+            f"Steel: {self.steel} with production {self.steel_prod}\n" \
+            f"Titanium: {self.titanium} with production {self.titaniu_prod}\n" \
+            f"Plant: {self.plant} with production {self.plant_prod}\n" \
+            f"Energy: {self.energy} with production {self.energy_prod}\n" \
+            f"Heat: {self.heat} with production {self.heat_prod}\n"
