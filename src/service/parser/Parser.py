@@ -181,6 +181,38 @@ class Parser():
             event_log = f"Player {self.game.current_player_number} {resource} production set to {new_production_value}"
             self.create_event_record(timestamp, event_log)
 
+        elif (operation_value == "[PlayerResources]" and
+              (not event.find("Set MegaCredit quantity from") == -1
+               or not event.find("Set Steel quantity from") == -1
+               or not event.find("Set Titanium quantity from") == -1
+               or not event.find("Set Plant quantity from") == -1
+               or not event.find("Set Energy quantity from") == -1
+               or not event.find("Set Heat quantity from") == -1)):
+
+            quantity_word_spot = event.find("quantity")
+            resource = event[5:quantity_word_spot - 1]
+            from_word_spot = event.find("from")
+            to_word_spot = event.find(" to ")
+            old_quantity_value = int(event[from_word_spot+5:to_word_spot])
+            new_quantity_value = int(event[to_word_spot+3:])
+
+            match resource:
+                case "MegaCredit":
+                    self.game.current_player.mega_credit = new_quantity_value
+                case "Steel":
+                    self.game.current_player.steel = new_quantity_value
+                case "Titanium":
+                    self.game.current_player.titanium = new_quantity_value
+                case "Plant":
+                    self.game.current_player.plant = new_quantity_value
+                case "Energy":
+                    self.game.current_player.energy = new_quantity_value
+                case "Heat":
+                    self.game.current_player.heat = new_quantity_value
+
+            event_log = f"Player {self.game.current_player_number} {resource} quantity set to {new_quantity_value}"
+            self.create_event_record(timestamp, event_log)
+
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
         time = event_time[12:20]
