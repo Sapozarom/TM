@@ -1,0 +1,25 @@
+1740030705 | New Game Created
+1740030705 | Player 1 created
+1740030705 | Player 2 created
+1740030705 | Player 3 created
+1740030705 | Player 1 terraforming rating was set to 20
+1740030705 | Player 1 MegaCredit production set to 1
+1740030705 | Player 1 Steel production set to 1
+1740030705 | Player 1 Titanium production set to 1
+1740030705 | Player 1 Plant production set to 1
+1740030705 | Player 1 Energy production set to 1
+1740030705 | Player 1 Heat production set to 1
+1740030705 | Player 2 terraforming rating was set to 20
+1740030705 | Player 2 MegaCredit production set to 1
+1740030705 | Player 2 Steel production set to 1
+1740030705 | Player 2 Titanium production set to 1
+1740030705 | Player 2 Plant production set to 1
+1740030705 | Player 2 Energy production set to 1
+1740030705 | Player 2 Heat production set to 1
+1740030705 | Player 3 terraforming rating was set to 20
+1740030705 | Player 3 MegaCredit production set to 1
+1740030705 | Player 3 Steel production set to 1
+1740030705 | Player 3 Titanium production set to 1
+1740030705 | Player 3 Plant production set to 1
+1740030705 | Player 3 Energy production set to 1
+1740030705 | Player 3 Heat production set to 1

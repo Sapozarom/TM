@@ -2,3 +2,6 @@
 1740234992 | Player 1 created
 1740234992 | Player 2 created
 1740234992 | Player 3 created
+1740234992 | Players 1 terraforming rating was set to 20
+1740234992 | Players 2 terraforming rating was set to 20
+1740234992 | Players 3 terraforming rating was set to 20

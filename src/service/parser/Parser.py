@@ -1,9 +1,9 @@
 import sys
-from typing import TYPE_CHECKING
+# from typing import TYPE_CHECKING
 from datetime import datetime
 
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+# from sqlalchemy.orm import Session
+# from sqlalchemy import create_engine
 
 from src.model.game import Game
 
@@ -32,7 +32,7 @@ class Parser():
     block = []
 
     def read_lines(self):
-        file = open("logs/Player.log", "r")
+        file = open("logs/Player_basic.log", "r")
 
         block_active = False
         block = []
@@ -59,6 +59,7 @@ class Parser():
 
             if self.line_number == 300:
                 # print(self.game.number_of_players)
+                print(self.game.players[0].terraforming_rating)
                 print(f"finished on line {self.line_number}")
                 break
 
@@ -108,8 +109,8 @@ class Parser():
             self.set_event_log_file_path(event_log_file_name)
 
             # event record
-            message = "New Game Created"
-            self.create_event_record(timestamp, message, "w")
+            event_log = "New Game Created"
+            self.create_event_record(timestamp, event_log, "w")
 
             # print line parts
             self.print_line_parts(event_time, type_value,
@@ -117,15 +118,68 @@ class Parser():
         # initialyze players
         elif operation_value == "[GameData]" and not event.find("TM_PlayerBoardData for player") == -1:
 
-            # event record
             if event[-2].isnumeric():
                 player_number = int(event[-2])
                 self.game.add_player(player_number)
-                message = f"Player {player_number} created"
-            else:
-                message = f"Something went wrong while creating player in line |{self.line_number}"
 
-            self.create_event_record(timestamp, message)
+                event_log = f"Player {player_number} created"
+            else:
+                event_log = f"Something went wrong while creating player in line |{self.line_number}"
+
+            self.create_event_record(timestamp, event_log)
+
+        # update terraforming rating
+        elif operation_value == "[TM_PlayerBoardData]" and not event.find("Set terraforming rating") == -1:
+
+            if self.game.phase == "GAME_INITIALIZATION" and self.game.current_player_number < self.game.number_of_players:
+                self.game.current_player_number += 1
+
+                # find old value
+                at_spot = event.find(" at")
+                with_spot = event.find("with")
+                old_tr_value = int(event[at_spot+3: with_spot])
+
+                # find new value
+                value_spot = event.find("value")
+                new_value = int(event[value_spot+5:])
+
+                self.game.current_player.terraforming_rating = new_value
+
+                event_log = f"Player {self.game.current_player_number} terraforming rating was set to {new_value}"
+                self.create_event_record(timestamp, event_log)
+
+        # update basic resource production
+        elif (operation_value == "[PlayerResources]" and
+              (not event.find("Set MegaCredit production from") == -1
+               or not event.find("Set Steel production from") == -1
+               or not event.find("Set Titanium production from") == -1
+               or not event.find("Set Plant production from") == -1
+               or not event.find("Set Energy production from") == -1
+               or not event.find("Set Heat production from") == -1)):
+
+            production_word_spot = event.find("production")
+            resource = event[5:production_word_spot - 1]
+            from_word_spot = event.find("from")
+            to_word_spot = event.find(" to ")
+            old_production_value = int(event[from_word_spot+5:to_word_spot])
+            new_production_value = int(event[to_word_spot+3:])
+
+            match resource:
+                case "MegaCredit":
+                    self.game.current_player.mega_credit_prod = new_production_value
+                case "Steel":
+                    self.game.current_player.steel_prod = new_production_value
+                case "Titanium":
+                    self.game.current_player.titaniu_prod = new_production_value
+                case "Plant":
+                    self.game.current_player.plant_prod = new_production_value
+                case "Energy":
+                    self.game.current_player.energy_prod = new_production_value
+                case "Heat":
+                    self.game.current_player.heat_prod = new_production_value
+
+            event_log = f"Player {self.game.current_player_number} {resource} production set to {new_production_value}"
+            self.create_event_record(timestamp, event_log)
 
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
