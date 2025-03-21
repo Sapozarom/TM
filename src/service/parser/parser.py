@@ -24,8 +24,7 @@ class Parser():
 
     # path to event log
     event_files_location = "eventLog/"
-    event_log_file_path = ""
-
+    event_log_file_path: str
     # current active game object to which the data is colected
     game: Game
 
@@ -35,7 +34,7 @@ class Parser():
         file = open("logs/Player_basic.log", "r")
 
         block_active = False
-        block = []
+
         for line in file:
 
             # analyze lines with timestamp as main commands
@@ -43,19 +42,20 @@ class Parser():
 
                 # start block
                 block_active = True
-                block.append(line)
+                self.block.append(line)
             elif line.startswith("[") and line[1].isdigit():
 
-                # stop block
+                # block finalization
                 if block_active:
-                    # print(block)
+                    # print(self.block)
+                    self.analyze_block()
                     block_active = False
-                    block = []
+                    self.block = []
 
                 self.analyze_line(line)
             else:
                 if block_active:
-                    block.append(line)
+                    self.block.append(line)
 
             if self.line_number == 300:
                 # print(self.game.number_of_players)
@@ -231,7 +231,16 @@ class Parser():
     def set_event_log_file_path(self, file_name):
         self.event_log_file_path = f"{self.event_files_location}{file_name}"
 
+    # update event log
     def create_event_record(self, timestamp, message, mode="a"):
         f = open(f"{self.event_log_file_path}", mode)
         f.write(f"{timestamp} | {message}\n")
         f.close()
+
+    def analyze_block(self):
+        if len(self.block) > 0:
+
+            block_type = self.block[0]
+            print(block_type)
+            # print(block_type)
+        pass
