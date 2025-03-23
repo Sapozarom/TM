@@ -29,6 +29,33 @@ class Game(ModelBase):
     players: Mapped[List["Player"]] = relationship(
         back_populates="game", cascade="all, delete-orphan")
 
+    # General
+    game_id: str
+    game_seed: str = None
+    is_custom: bool = None
+    is_online: bool = None
+    is_draft: bool = None
+    is_ranked: bool = None
+    # Data
+    variant: str = None
+    prelude_phase: bool = None
+    tr_63: bool = None
+    board_type: str = None
+    beginner_corp: bool = None
+    extension_cards: List = None
+    extension_corps: List = None
+    corp_separate_draw: bool = None
+    generation_level: int = None
+    # Global parameters:
+
+    temperature_level: int = None
+    oxygen_level: int = None
+    ocean_level: int = None
+    venus_scale: int = None
+    # Setup
+    is_player_replaced_by_aI: bool
+    is_player_order_shuffled: bool
+
     # Phase of the game tweak how some parts of events work
     # current phases are
     # 0 - NOT_STARTED - before game was created and after it was finished
@@ -63,6 +90,15 @@ class Game(ModelBase):
             self.__current_player_number = 0
             self.current_player = None
 
+    @property
+    def has_current_player(self):
+        value = False
+
+        if not (self.current_player == None) and (isinstance(self.current_player, Player)):
+            value = True
+
+        return value
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self.current_player_number = 0
@@ -73,3 +109,31 @@ class Game(ModelBase):
         self.players.append(new_player)
 
     # def
+    def print_game_setup(self):
+        print(f"### GENERAL ###")
+        print(f"Game with GameID: -{self.game_id}-")
+        print(f"Seed: -{self.game_seed}-")
+        print(f"is custom: -{self.is_custom}-")
+        print(f"Is online: -{self.is_online}-")
+        print(f"Is draft: -{self.is_online}-")
+        print(f"Is draft: -{self.is_draft}-")
+        print(f"Is ranked: -{self.is_ranked}-")
+        print(f"Is online: -{self.is_online}-")
+        print(f"### DATA ###")
+        print(f"Variant: -{self.variant}-")
+        print(f"Prelude phase: -{self.prelude_phase}-")
+        print(f"TR 63: -{self.tr_63}-")
+        print(f"Boadr type: -{self.board_type}-")
+        print(f"Beginner Corp: -{self.beginner_corp}-")
+        print(f"Extension Cards: ")
+        for extension in self.extension_cards:
+            print(f"---- -{extension}-")
+        print(f"Extension Corps: ")
+        for extension in self.extension_corps:
+            print(f"---- -{extension}-")
+        print(f"Generation: |{self.generation_level}|")
+        print(f"### GLOBAL PARAMETERS ###")
+        print(f"Temperature: |{self.temperature_level} deg. C|")
+        print(f"Oxygen: |{self.oxygen_level}%|")
+        print(f"Oceans: |{self.ocean_level}|")
+        print(f"Venus Scale: |{self.venus_scale}%|")

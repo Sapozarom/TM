@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 class Player(ModelBase):
     __tablename__ = 'player'
-
+    __allow_unmapped__ = True
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     game: Mapped["Game"] = relationship(back_populates="players")
     game_id: Mapped[int] = mapped_column(ForeignKey("game.id"))
@@ -42,11 +42,27 @@ class Player(ModelBase):
     energy_prod = 0
     heat_prod = 0
 
+    # Players part from game creation block
+    name: str = None
+    ai_level: str = None
+    is_me: bool
+    used_cards: List
+    hand_cards: List
+
+    # actions collected from rows like:
+    # [2025-02-22T15:36:33.9801591Z][Info][PlayerActionBank] Adding action (1) Standard Project: PowerPlant to player 2 bank in AvailableActions
+    # [2025-02-22T15:36:33.9801591Z][Info][PlayerActionBank] Adding action (2) Standard Project: Asteroid to player 2 bank in AvailableActions
+    # tons of action
+    # all kinds of actions
+    # all kinds...
+
+    action_bank = List
+
     def __init__(self, **kw):
         super().__init__(**kw)
 
     def __repr__(self):
-        return f"Player {self.number}\n" \
+        return f"Player named '{self.name}' and number {self.number}\n" \
             f"TR: {self.terraforming_rating}\n" \
             f"Mega Credit: {self.mega_credit} with production {self.mega_credit_prod}\n" \
             f"Steel: {self.steel} with production {self.steel_prod}\n" \

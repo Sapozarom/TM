@@ -1,5 +1,5 @@
 import sys
-# from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING
 from datetime import datetime
 
 # from sqlalchemy.orm import Session
@@ -8,7 +8,7 @@ from datetime import datetime
 from src.model.game import Game
 
 # if TYPE_CHECKING:
-#     from src.model.Player import Player
+from src.model.player import Player
 
 
 class Parser():
@@ -48,7 +48,7 @@ class Parser():
                 # block finalization
                 if block_active:
                     # print(self.block)
-                    self.analyze_block()
+                    self.get_block_type()
                     block_active = False
                     self.block = []
 
@@ -59,7 +59,8 @@ class Parser():
 
             if self.line_number == 300:
                 # print(self.game.number_of_players)
-                print(self.game.players[0])
+                # print(self.game.print_game_setup())
+
                 print(f"finished on line {self.line_number}")
                 break
 
@@ -237,10 +238,92 @@ class Parser():
         f.write(f"{timestamp} | {message}\n")
         f.close()
 
-    def analyze_block(self):
+    # ANALYZE CURRENT BLOCK SECTION
+    def get_block_type(self):
         if len(self.block) > 0:
 
-            block_type = self.block[0]
-            print(block_type)
+            block_type: str = self.block[0]
+
+            if not block_type.find("Created new Game") == -1:
+                self.block_create_game()
+
             # print(block_type)
         pass
+
+    def block_create_game(self):
+        print("New Game Created:")
+
+        for record in self.block:
+            find_value = record.find(": ")
+            new_value = record[find_value + 2:-1]
+            if not record.find("GameID:") == -1:
+                self.game.game_id = str(new_value)
+            elif not record.find("GameSeed:") == -1:
+                self.game.game_seed = str(new_value)
+            elif not record.find("IsCustom:") == -1:
+                print(f"IsCustom: {bool(new_value)}")
+                self.game.is_custom = bool(new_value)
+            elif not record.find("IsOnline:") == -1:
+                self.game.is_online = bool(new_value)
+            elif not record.find("IsDraft:") == -1:
+                self.game.is_draft = bool(new_value)
+            elif not record.find("IsRanked:") == -1:
+                self.game.is_ranked = bool(new_value)
+            elif not record.find("Variant:") == -1:
+                self.game.variant = str(new_value)
+            elif not record.find("Prelude Phase:") == -1:
+                self.game.prelude_phase = bool(new_value)
+            elif not record.find("TR63:") == -1:
+                self.game.tr_63 = bool(new_value)
+            elif not record.find("BoardType:") == -1:
+                self.game.board_type = str(new_value)
+            elif not record.find("Beginner Corp:") == -1:
+                self.game.beginner_corp = bool(new_value)
+            elif not record.find("Extension Cards:") == -1:
+                # list check
+                new_list = self.get_list_split_by_coma(new_value)
+                self.game.extension_cards = new_list
+            elif not record.find("Extension Corp:") == -1:
+                # list check
+                new_list = self.get_list_split_by_coma(new_value)
+                self.game.extension_corps = new_list
+            elif not record.find("Corp Separate Draw:") == -1:
+                self.game.corp_separate_draw = bool(new_value)
+            elif not record.find("GenerationLevel:") == -1:
+                self.game.generation_level = int(new_value)
+            elif not record.find("TemperatureLevel:") == -1:
+                self.game.temperature_level = int(new_value)
+            elif not record.find("OxygenLevel:") == -1:
+                self.game.oxygen_level = int(new_value)
+            elif not record.find("OceanLevel:") == -1:
+                self.game.ocean_level = int(new_value)
+            elif not record.find("VenusScale:") == -1:
+                self.game.venus_scale = int(new_value)
+            elif not record.find("Player ") == -1 and record.find(":") == -1:
+                player_number = int(record[-3:-1])
+                self.game.current_player_number = int(player_number)
+                print(f"Current: {self.game.current_player}")
+            elif not (record.find("Name:") == -1):
+                if self.game.has_current_player:
+                    self.game.current_player.name = str(new_value)
+            elif not (record.find("AILevel:") == -1):
+                if self.game.has_current_player:
+                    self.game.current_player.ai_level = str(new_value)
+            elif not (record.find("IsMe:") == -1):
+                if self.game.has_current_player:
+                    self.game.current_player.ai_level = str(new_value)
+            elif not record.find("Is player replaced by AI:") == -1:
+                self.game.is_player_replaced_by_aI = bool(new_value)
+            elif not record.find("Is player order shuffled:") == -1:
+                self.game.is_player_order_shuffled = bool(new_value)
+
+    def get_list_split_by_coma(self, value: str):
+        new_list: list = []
+
+        if value.find(","):
+            # get_values = record[find_value]
+            new_list = value.split(",")
+        else:
+            new_list.append(None)
+
+        return new_list
