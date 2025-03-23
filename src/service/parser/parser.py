@@ -59,7 +59,7 @@ class Parser():
 
             if self.line_number == 300:
                 # print(self.game.number_of_players)
-                # print(self.game.print_game_setup())
+                print(self.game.print_game_setup())
 
                 print(f"finished on line {self.line_number}")
                 break
@@ -261,7 +261,8 @@ class Parser():
             elif not record.find("GameSeed:") == -1:
                 self.game.game_seed = str(new_value)
             elif not record.find("IsCustom:") == -1:
-                print(f"IsCustom: {bool(new_value)}")
+                new_value = self.get_bool(new_value)
+                print(f"IsCustom: {new_value}")
                 self.game.is_custom = bool(new_value)
             elif not record.find("IsOnline:") == -1:
                 self.game.is_online = bool(new_value)
@@ -316,6 +317,13 @@ class Parser():
                 self.game.is_player_replaced_by_aI = bool(new_value)
             elif not record.find("Is player order shuffled:") == -1:
                 self.game.is_player_order_shuffled = bool(new_value)
+
+    def get_bool(self, value: str):
+        bool_value = False
+
+        if value.find("True"):
+            bool_value = True
+        return bool_value
 
     def get_list_split_by_coma(self, value: str):
         new_list: list = []
