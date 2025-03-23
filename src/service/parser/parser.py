@@ -258,28 +258,34 @@ class Parser():
             new_value = record[find_value + 2:-1]
             if not record.find("GameID:") == -1:
                 self.game.game_id = str(new_value)
+
             elif not record.find("GameSeed:") == -1:
                 self.game.game_seed = str(new_value)
             elif not record.find("IsCustom:") == -1:
                 new_value = self.get_bool(new_value)
-                print(f"IsCustom: {new_value}")
-                self.game.is_custom = bool(new_value)
+                self.game.is_custom = new_value
             elif not record.find("IsOnline:") == -1:
-                self.game.is_online = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.is_online = new_value
             elif not record.find("IsDraft:") == -1:
-                self.game.is_draft = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.is_draft = new_value
             elif not record.find("IsRanked:") == -1:
-                self.game.is_ranked = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.is_ranked = new_value
             elif not record.find("Variant:") == -1:
                 self.game.variant = str(new_value)
             elif not record.find("Prelude Phase:") == -1:
-                self.game.prelude_phase = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.prelude_phase = new_value
             elif not record.find("TR63:") == -1:
-                self.game.tr_63 = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.tr_63 = new_value
             elif not record.find("BoardType:") == -1:
                 self.game.board_type = str(new_value)
             elif not record.find("Beginner Corp:") == -1:
-                self.game.beginner_corp = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.beginner_corp = new_value
             elif not record.find("Extension Cards:") == -1:
                 # list check
                 new_list = self.get_list_split_by_coma(new_value)
@@ -289,7 +295,8 @@ class Parser():
                 new_list = self.get_list_split_by_coma(new_value)
                 self.game.extension_corps = new_list
             elif not record.find("Corp Separate Draw:") == -1:
-                self.game.corp_separate_draw = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.corp_separate_draw = new_value
             elif not record.find("GenerationLevel:") == -1:
                 self.game.generation_level = int(new_value)
             elif not record.find("TemperatureLevel:") == -1:
@@ -303,7 +310,7 @@ class Parser():
             elif not record.find("Player ") == -1 and record.find(":") == -1:
                 player_number = int(record[-3:-1])
                 self.game.current_player_number = int(player_number)
-                print(f"Current: {self.game.current_player}")
+                # print(f"Current: {self.game.current_player}")
             elif not (record.find("Name:") == -1):
                 if self.game.has_current_player:
                     self.game.current_player.name = str(new_value)
@@ -314,14 +321,16 @@ class Parser():
                 if self.game.has_current_player:
                     self.game.current_player.ai_level = str(new_value)
             elif not record.find("Is player replaced by AI:") == -1:
-                self.game.is_player_replaced_by_aI = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.is_player_replaced_by_aI = new_value
             elif not record.find("Is player order shuffled:") == -1:
-                self.game.is_player_order_shuffled = bool(new_value)
+                new_value = self.get_bool(new_value)
+                self.game.is_player_order_shuffled = new_value
 
     def get_bool(self, value: str):
         bool_value = False
 
-        if value.find("True"):
+        if not value.find("True") == -1:
             bool_value = True
         return bool_value
 
