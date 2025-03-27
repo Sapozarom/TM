@@ -263,7 +263,7 @@ class Parser():
             new_value = record[find_value + 2:-1]
             parameter = record[:find_value]
             # print(parameter)
-            event_log = None
+
             # change current player
             if not record.find("Player ") == -1 and record.find(":") == -1:
                 player_number = int(record[-3:-1])
@@ -273,66 +273,104 @@ class Parser():
                 event_log = f"Current Player changed to {player_number}"
                 self.create_event_record(timestamp, event_log)
 
+            event_log = None
+            player_param = False
+            param = None
             match parameter:
                 case "GameID":
                     self.game.game_id = str(new_value)
+                    param = "GameID"
                 case "GameSeed":
                     self.game.game_seed = str(new_value)
+                    param = "GameSeed"
                 case "IsCustom":
+                    param = "IsCustom"
                     self.game.is_custom = self.get_bool_from_string(new_value)
                 case "IsOnline":
+                    param = "IsOnline"
                     self.game.is_online = self.get_bool_from_string(new_value)
                 case "IsDraft":
+                    param = "IsDraft"
                     self.game.is_draft = self.get_bool_from_string(new_value)
                 case "IsRanked":
+                    param = "IsRanked"
                     self.game.is_ranked = self.get_bool_from_string(new_value)
                 case "Variant":
+                    param = "Variant"
                     self.game.variant = str(new_value)
                 case "Prelude Phase":
+                    param = "Prelude Phase"
                     self.game.prelude_phase = self.get_bool_from_string(
                         new_value)
                 case "TR63":
+                    param = "TR63"
                     self.game.tr_63 = self.get_bool_from_string(new_value)
                 case "BoardType":
+                    param = "BoardType"
                     self.game.board_type = str(new_value)
                 case "Beginner Corp":
+                    param = "Beginner Corp"
                     self.game.beginner_corp = self.get_bool_from_string(
                         new_value)
                 case "Extension Cards":
+                    param = "Extension Cards"
                     new_list = self.get_list_split_by_coma(new_value)
                     self.game.extension_cards = new_list
                 case "Extension Corp":
+                    param = "Extension Corp"
                     new_list = self.get_list_split_by_coma(new_value)
                     self.game.extension_corps = new_list
                 case "Corp Separate Draw":
+                    param = "Corp Separate Draw"
                     self.game.corp_separate_draw = self.get_bool_from_string(
                         new_value)
                 case "GenerationLevel":
+                    param = "GenerationLevel"
                     self.game.generation_level = int(new_value)
                 case "TemperatureLevel":
+                    param = "TemperatureLevel"
                     self.game.temperature_level = int(new_value)
                 case "OxygenLevel":
+                    param = "OxygenLevel"
                     self.game.oxygen_level = int(new_value)
                 case "OceanLevel":
+                    param = "OceanLevel"
                     self.game.ocean_level = int(new_value)
                 case "VenusScale":
+                    param = "VenusScale"
                     self.game.venus_scale = int(new_value)
                 case "Name":
+                    param = "Name"
+                    player_param = True
                     if self.game.has_current_player:
                         self.game.current_player.name = str(new_value)
-                        # event_log = f"Player "
                 case "AILevel":
+                    param = "AILevel"
+                    player_param = True
                     if self.game.has_current_player:
                         self.game.current_player.ai_level = str(new_value)
                 case "IsMe":
+                    param = "IsMe"
+                    player_param = True
                     if self.game.has_current_player:
                         self.game.current_player.ai_level = str(new_value)
                 case "Is player replaced by AI":
+                    param = "Is player replaced by AI"
                     self.game.is_player_replaced_by_aI = self.get_bool_from_string(
                         new_value)
                 case "Is player order shuffled":
+                    param = "Is player order shuffled"
                     self.game.is_player_order_shuffled = self.get_bool_from_string(
                         new_value)
+
+            # create event log message
+            if player_param:
+                event_log = f"Player {self.game.current_player_number} parameter change {param} = {new_value}"
+            elif not param is None:
+                event_log = f"Game parameter change  {param} = {new_value}"
+
+            if not event_log == None:
+                self.create_event_record(timestamp, event_log)
 
     def get_list_split_by_coma(self, value: str):
         new_list: list = []

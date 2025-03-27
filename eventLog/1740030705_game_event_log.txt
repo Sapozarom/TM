@@ -26,6 +26,36 @@
 1740030705 | Player 3 Plant production set to 1
 1740030705 | Player 3 Energy production set to 1
 1740030705 | Player 3 Heat production set to 1
+1740030705 | Game parameter change  GameID = 568288422072872892
+1740030705 | Game parameter change  GameSeed = 188379951
+1740030705 | Game parameter change  IsCustom = False
+1740030705 | Game parameter change  IsOnline = False
+1740030705 | Game parameter change  IsDraft = False
+1740030705 | Game parameter change  IsRanked = False
+1740030705 | Game parameter change  Variant = BaseGame
+1740030705 | Game parameter change  Prelude Phase = True
+1740030705 | Game parameter change  TR63 = False
+1740030705 | Game parameter change  BoardType = Tharsis
+1740030705 | Game parameter change  Beginner Corp = True
+1740030705 | Game parameter change  Extension Cards = Venus,Prelude
+1740030705 | Game parameter change  Extension Corp = Venus,Prelude
+1740030705 | Game parameter change  Corp Separate Draw = False
+1740030705 | Game parameter change  GenerationLevel = 1
+1740030705 | Game parameter change  TemperatureLevel = -30
+1740030705 | Game parameter change  OxygenLevel = 0
+1740030705 | Game parameter change  OceanLevel = 0
+1740030705 | Game parameter change  VenusScale = 0
 1740030705 | Current Player changed to 1
+1740030705 | Player 1 parameter change Name = 1 Player
+1740030705 | Player 1 parameter change AILevel = None
+1740030705 | Player 1 parameter change IsMe = True
 1740030705 | Current Player changed to 2
+1740030705 | Player 2 parameter change Name = 2 Player
+1740030705 | Player 2 parameter change AILevel = (Hard)
+1740030705 | Player 2 parameter change IsMe = True
 1740030705 | Current Player changed to 3
+1740030705 | Player 3 parameter change Name = 3 Player
+1740030705 | Player 3 parameter change AILevel = (Hard)
+1740030705 | Player 3 parameter change IsMe = True
+1740030705 | Game parameter change  Is player replaced by AI = False
+1740030705 | Game parameter change  Is player order shuffled = True
