@@ -3,7 +3,7 @@ import sys
 from src.ui.uiBoard import UiBoard
 from PyQt5 import QtWidgets
 
-from src.service.createDbTables.CreateDbTables import CreateDbTables
+from src.lib.createDbTables.CreateDbTables import CreateDbTables
 
 
 def main():

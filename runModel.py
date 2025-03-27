@@ -1,6 +1,6 @@
 import sys
 
-from src.service.createDbTables.CreateDbTables import CreateDbTables
+from src.lib.createDbTables.CreateDbTables import CreateDbTables
 
 
 def main():

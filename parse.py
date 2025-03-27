@@ -1,6 +1,6 @@
 import sys
 
-from src.service.parser.parser import Parser
+from src.lib.parser.parser import Parser
 
 
 def main():
