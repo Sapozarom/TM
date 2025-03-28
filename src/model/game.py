@@ -108,7 +108,20 @@ class Game(ModelBase):
         new_player.number = number
         self.players.append(new_player)
 
+    def get_player_by_number(self, number):
+        player = None
+
+        if 0 < number <= self.number_of_players:
+
+            if self.players[number-1].number == number:
+                player = self.players[number-1]
+            else:
+                player = next(
+                    (x for x in self.players if x.number == number), None)
+
+        return player
     # def
+
     def print_game_setup(self):
         print(f"### GENERAL ###")
         print(f"Game with GameID: -{self.game_id}-")

@@ -160,6 +160,7 @@ class Parser():
                or not event.find("Set Energy production from") == -1
                or not event.find("Set Heat production from") == -1)):
 
+            # find resource and value in text
             production_word_spot = event.find("production")
             resource = event[5:production_word_spot - 1]
             from_word_spot = event.find("from")
@@ -167,6 +168,7 @@ class Parser():
             old_production_value = int(event[from_word_spot+5:to_word_spot])
             new_production_value = int(event[to_word_spot+3:])
 
+            # update values
             match resource:
                 case "MegaCredit":
                     self.game.current_player.mega_credit_prod = new_production_value
@@ -181,9 +183,11 @@ class Parser():
                 case "Heat":
                     self.game.current_player.heat_prod = new_production_value
 
+            # event log
             event_log = f"Player {self.game.current_player_number} {resource} production set to {new_production_value}"
             self.create_event_record(timestamp, event_log)
 
+        # update basic resources quantity
         elif (operation_value == "[PlayerResources]" and
               (not event.find("Set MegaCredit quantity from") == -1
                or not event.find("Set Steel quantity from") == -1
@@ -192,6 +196,7 @@ class Parser():
                or not event.find("Set Energy quantity from") == -1
                or not event.find("Set Heat quantity from") == -1)):
 
+            # find resource and quantity in text
             quantity_word_spot = event.find("quantity")
             resource = event[5:quantity_word_spot - 1]
             from_word_spot = event.find("from")
@@ -199,6 +204,7 @@ class Parser():
             old_quantity_value = int(event[from_word_spot+5:to_word_spot])
             new_quantity_value = int(event[to_word_spot+3:])
 
+            # update quantity
             match resource:
                 case "MegaCredit":
                     self.game.current_player.mega_credit = new_quantity_value
@@ -213,9 +219,12 @@ class Parser():
                 case "Heat":
                     self.game.current_player.heat = new_quantity_value
 
+            # event log
             event_log = f"Player {self.game.current_player_number} {resource} quantity set to {new_quantity_value}"
             self.create_event_record(timestamp, event_log)
 
+    # create proper timestamp from log string
+    # example: [2025-02-22T15:36:33.9801591Z]
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
         time = event_time[12:20]
@@ -252,17 +261,16 @@ class Parser():
             if not block_type.find("Created new Game") == -1:
                 self.block_create_game(timestamp)
 
-            # print(block_type)
         pass
 
     def block_create_game(self, timestamp):
         print("New Game Created:")
 
         for record in self.block:
+            # find value in text
             find_value = record.find(": ")
             new_value = record[find_value + 2:-1]
             parameter = record[:find_value]
-            # print(parameter)
 
             # change current player
             if not record.find("Player ") == -1 and record.find(":") == -1:
@@ -273,9 +281,12 @@ class Parser():
                 event_log = f"Current Player changed to {player_number}"
                 self.create_event_record(timestamp, event_log)
 
+            # default values
             event_log = None
             player_param = False
             param = None
+
+            # switch through diferent parameters
             match parameter:
                 case "GameID":
                     self.game.game_id = str(new_value)
