@@ -15,9 +15,11 @@ class Parser():
 
     file = open("logs/Player.log", "r")
 
-    line_number = 1
+    line_number = 0
     block_active = False
     game_in_progress = False
+
+    finish_line = 400
 
     # engine = create_engine("sqlite:///tmdb.db", echo=True)
     # session = Session(engine)
@@ -36,6 +38,7 @@ class Parser():
         block_active = False
 
         for line in file:
+            self.line_number += 1
 
             # analyze lines with timestamp as main commands
             if line.startswith("[") and line[1].isdigit() and line.endswith(": \n"):
@@ -57,14 +60,12 @@ class Parser():
                 if block_active:
                     self.block.append(line)
 
-            if self.line_number == 300:
+            if self.line_number == self.finish_line:
                 # print(self.game.number_of_players)
-                print(self.game.print_game_setup())
+                # print(self.game.print_game_setup())
 
                 print(f"finished on line {self.line_number}")
                 break
-
-            self.line_number += 1
 
         # Close the file
         file.close()
@@ -223,6 +224,18 @@ class Parser():
             event_log = f"Player {self.game.current_player_number} {resource} quantity set to {new_quantity_value}"
             self.create_event_record(timestamp, event_log)
 
+        # adding action to action bank
+        elif (operation_value == "[PlayerActionBank]" and not event.find("Adding action") == -1):
+            # find action number
+            open_bracket_pos = event.find("(")
+            close_bracket_pos = event.find(")")
+            action_number = int(event[open_bracket_pos + 1: close_bracket_pos])
+
+            to_player_word_pos = event.find("to player")
+            bank_word_pos = event.find("bank")
+            player_number = int(event[to_player_word_pos + 9: bank_word_pos])
+            print(action_number)
+
     # create proper timestamp from log string
     # example: [2025-02-22T15:36:33.9801591Z]
     def get_timestamp_from_event_time(self, event_time):
@@ -260,8 +273,6 @@ class Parser():
 
             if not block_type.find("Created new Game") == -1:
                 self.block_create_game(timestamp)
-
-        pass
 
     def block_create_game(self, timestamp):
         print("New Game Created:")
