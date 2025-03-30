@@ -1,0 +1,17 @@
+GAME START
+GAME PARAMETERS AND PLAYERS INITIALIZATION
+(gs) - basic resources
+GENERATION 1 -> no draft, 10 cards to buy, corporation pick, prelude pick
+    ADDING ACTIONS TO (BANK) (INITIAL ACTIONS STANDARD PROJECTS, AWARDS MILESTONES)
+    SET AVAILABLE TO BUY CARDS
+    (pa) OWNER PICKS CORPORATION 
+    (pa) OWNER PICKS PRELUDE CARDS
+    (pa) OWNER BUYS CARDS FROM HIS AVAILABLE CARDS
+    pLAYERS ACTION (BANK) UPDATE 
+    (gs) - resources
+    (pa) ROP pick cororations and prelude cards
+    (gs) 
+
+
+
+

@@ -56,7 +56,7 @@ class Player(ModelBase):
     # all kinds of actions
     # all kinds...
 
-    action_bank = List
+    action_bank = dict()
 
     def __init__(self, **kw):
         super().__init__(**kw)

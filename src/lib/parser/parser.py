@@ -1,7 +1,7 @@
 import sys
 from typing import TYPE_CHECKING
 from datetime import datetime
-
+from src.lib.updateDbTables.updateDbTables import UpdateDbTables
 # from sqlalchemy.orm import Session
 # from sqlalchemy import create_engine
 
@@ -14,6 +14,7 @@ from src.model.player import Player
 class Parser():
 
     file = open("logs/Player.log", "r")
+    dbUpdater = UpdateDbTables()
 
     line_number = 0
     block_active = False
@@ -63,6 +64,9 @@ class Parser():
             if self.line_number == self.finish_line:
                 # print(self.game.number_of_players)
                 # print(self.game.print_game_setup())
+                # print(self.game.current_player.action_bank)
+
+                # self.dbUpdater.create_new_game(self.game)
 
                 print(f"finished on line {self.line_number}")
                 break
@@ -234,10 +238,29 @@ class Parser():
             to_player_word_pos = event.find("to player")
             bank_word_pos = event.find("bank")
             player_number = int(event[to_player_word_pos + 9: bank_word_pos])
-            print(action_number)
+
+            action_name = event[close_bracket_pos + 2: to_player_word_pos - 1]
+
+            # print(action_name)
+
+            player_object = self.game.get_player_by_number(player_number)
+            player_object.action_bank[action_number] = action_name
+
+        # change game phase to PlayerSetup
+        elif (operation_value == "[State machine]" and not event.find("GameSM enters PlayerSetup") == -1):
+            # SAVE GAME STATE
+            self.game.phase = "PLAYER_STEUP"
+            self.game.current_player_number = 0
+
+
+# asdasd
+# asdasd
+# asdasd
 
     # create proper timestamp from log string
     # example: [2025-02-22T15:36:33.9801591Z]
+
+
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
         time = event_time[12:20]

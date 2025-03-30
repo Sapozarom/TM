@@ -5,12 +5,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 
-# import sys
-# raise RuntimeError(sys.path)
-
-# pip install src
-
-
 class CreateDbTables():
 
     def main(self):

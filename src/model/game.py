@@ -25,12 +25,13 @@ class Game(ModelBase):
     __allow_unmapped__ = True
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    game_id: Mapped[str] = mapped_column(String(20))
     start: Mapped[str] = mapped_column(String(30))
     players: Mapped[List["Player"]] = relationship(
         back_populates="game", cascade="all, delete-orphan")
 
     # General
-    game_id: str
+
     game_seed: str = None
     is_custom: bool = None
     is_online: bool = None
@@ -59,7 +60,8 @@ class Game(ModelBase):
     # Phase of the game tweak how some parts of events work
     # current phases are
     # 0 - NOT_STARTED - before game was created and after it was finished
-    # 1 = GAME_INITIALIZATION - part when players and board setup is created
+    # 1 - GAME_INITIALIZATION - part when players and board setup is created
+    # 2 - PLAYER_SETUP - players pick corporations and prelude cards
     phase = "NOT_STARTED"
 
     # object of player who currently takes action
