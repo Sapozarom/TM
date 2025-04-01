@@ -26,3 +26,6 @@ class Generation(Base):
     number: Mapped[int] = mapped_column()
     game: Mapped["Game"] = relationship(back_populates="generation")
     # game = Game
+
+    # [player_number=> [list of cards]]
+    reserch_phase: dict

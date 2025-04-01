@@ -30,6 +30,8 @@ class Game(ModelBase):
     players: Mapped[List["Player"]] = relationship(
         back_populates="game", cascade="all, delete-orphan")
 
+    generations: dict
+
     # General
 
     game_seed: str = None

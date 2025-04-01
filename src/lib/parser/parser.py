@@ -252,6 +252,17 @@ class Parser():
             self.game.phase = "PLAYER_STEUP"
             self.game.current_player_number = 0
 
+        # reaserch phase available cards - all cards that player can buy
+        elif (operation_value == "[TM_PlayerBoardData]" and not event.find("SetAvailableCards") == -1):
+            self.game.current_player_number += 1
+            open_bracket_pos = event.find("(")
+            close_bracket_pos = event.find(")")
+
+            cards = event[open_bracket_pos + 1: close_bracket_pos]
+            card_list = self.get_list_split_by_coma(cards)
+            print(card_list)
+            pass
+
 
 # asdasd
 # asdasd
