@@ -1,6 +1,7 @@
 import sys
 from typing import TYPE_CHECKING
 from datetime import datetime
+import json
 from src.lib.updateDbTables.updateDbTables import UpdateDbTables
 # from sqlalchemy.orm import Session
 # from sqlalchemy import create_engine
@@ -263,8 +264,12 @@ class Parser():
             card_list = self.get_list_split_by_coma(cards)
             # self.game.current_generation.reserch_phase_str = cards
             self.game.current_generation.reserch_phase_dict[self.game.current_player_number] = card_list
-            print(self.game.current_generation.reserch_phase_dict)
-            pass
+            # print(self.game.current_generation.reserch_phase_dict)
+
+            if self.game.current_player_number == self.game.number_of_players:
+
+                self.game.current_generation.reserch_phase_str = json.dumps(
+                    self.game.current_generation.reserch_phase_dict)
 
 
 # asdasd
