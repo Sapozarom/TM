@@ -2,6 +2,7 @@ import sys
 
 
 from typing import List
+from typing import Dict
 from typing import Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
@@ -27,10 +28,10 @@ class Game(ModelBase):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     game_id: Mapped[str] = mapped_column(String(20))
     start: Mapped[str] = mapped_column(String(30))
+    generations: Mapped[List["Generation"]] = relationship(
+        back_populates="game", cascade="all, delete-orphan")
     players: Mapped[List["Player"]] = relationship(
         back_populates="game", cascade="all, delete-orphan")
-
-    generations: dict
 
     # General
 
@@ -72,6 +73,9 @@ class Game(ModelBase):
     # number of player who currently takes action
     __current_player_number = 0
 
+    current_generation: Generation
+    current_generation_number = 0
+
     @property
     def number_of_players(self):
         return len(self.players)
@@ -103,6 +107,16 @@ class Game(ModelBase):
 
         return value
 
+    @property
+    def current_generation(self):
+
+        if self.generations[self.current_generation_number - 1].number == self.current_generation_number:
+            generation = self.generations[self.current_generation_number - 1]
+        else:
+            generation = next(
+                (x for x in self.generations if x.number == self.current_generation_number), None)
+        return generation
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self.current_player_number = 0
@@ -125,6 +139,11 @@ class Game(ModelBase):
 
         return player
     # def
+
+    def add_generation(self, number):
+        self.current_generation_number = number
+        new_generation = Generation(self.current_generation_number)
+        self.generations.append(new_generation)
 
     def print_game_setup(self):
         print(f"### GENERAL ###")

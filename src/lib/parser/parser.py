@@ -67,7 +67,7 @@ class Parser():
                 # print(self.game.current_player.action_bank)
 
                 # self.dbUpdater.create_new_game(self.game)
-
+                print(self.game.generations[0].reserch_phase_str)
                 print(f"finished on line {self.line_number}")
                 break
 
@@ -259,8 +259,11 @@ class Parser():
             close_bracket_pos = event.find(")")
 
             cards = event[open_bracket_pos + 1: close_bracket_pos]
+
             card_list = self.get_list_split_by_coma(cards)
-            print(card_list)
+            # self.game.current_generation.reserch_phase_str = cards
+            self.game.current_generation.reserch_phase_dict[self.game.current_player_number] = card_list
+            print(self.game.current_generation.reserch_phase_dict)
             pass
 
 
@@ -270,7 +273,6 @@ class Parser():
 
     # create proper timestamp from log string
     # example: [2025-02-22T15:36:33.9801591Z]
-
 
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
@@ -383,6 +385,7 @@ class Parser():
                 case "GenerationLevel":
                     param = "GenerationLevel"
                     self.game.generation_level = int(new_value)
+                    self.game.add_generation(int(new_value))
                 case "TemperatureLevel":
                     param = "TemperatureLevel"
                     self.game.temperature_level = int(new_value)
