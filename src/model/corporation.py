@@ -73,7 +73,3 @@ class Corporation(ModelBase):
     # PharmacyUnion_Event = 29,
     # PharmacyUnion = 30,
     # Astrodrill = 31
-
-    def declare_all_corporations():
-
-        pass
