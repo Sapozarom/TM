@@ -276,8 +276,9 @@ class Parser():
 # asdasd
 # asdasd
 
-    # create proper timestamp from log string
+    # create timestamp from (ISO 8601) log string
     # example: [2025-02-22T15:36:33.9801591Z]
+
 
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]

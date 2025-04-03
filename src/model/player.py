@@ -10,7 +10,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Session
 from src.model.modelBase import ModelBase
-
+from src.model.corporation import Corporation
 if TYPE_CHECKING:
     from src.model.game import Game
 
@@ -27,6 +27,8 @@ class Player(ModelBase):
     game_id: Mapped[int] = mapped_column(ForeignKey("game.id"))
     terraforming_rating: Mapped[int] = mapped_column()
     number: Mapped[int] = mapped_column()
+    corporation: Mapped["Corporation"] = relationship(back_populates="players")
+    corporation_id: Mapped[int] = mapped_column(ForeignKey("corporation.id"))
 
     mega_credit = 0
     steel = 0
