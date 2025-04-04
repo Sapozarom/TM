@@ -1,0 +1,44 @@
+1743174164 | New Game Created
+1743174164 | Player 1 created
+1743174164 | Player 2 created
+1743174164 | Player 3 created
+1743174164 | Current Player changed to 1
+1743174164 | Player 1 terraforming rating was set to 20
+1743174164 | Current Player changed to 2
+1743174164 | Player 2 terraforming rating was set to 20
+1743174164 | Current Player changed to 3
+1743174164 | Player 3 terraforming rating was set to 20
+1743174164 | Game parameter change  GameID = 3811303447769124864
+1743174164 | Game parameter change  GameSeed = 27379236
+1743174164 | Game parameter change  IsCustom = False
+1743174164 | Game parameter change  IsOnline = True
+1743174164 | Game parameter change  IsDraft = True
+1743174164 | Game parameter change  IsRanked = False
+1743174164 | Game parameter change  Variant = CorporateEra
+1743174164 | Game parameter change  Prelude Phase = True
+1743174164 | Game parameter change  TR63 = False
+1743174164 | Game parameter change  BoardType = Hellas
+1743174164 | Game parameter change  Beginner Corp = False
+1743174164 | Game parameter change  Extension Cards = Prelude,OriginalPromoPack
+1743174164 | Game parameter change  Extension Corp = Prelude,OriginalPromoPack
+1743174164 | Game parameter change  Corp Separate Draw = False
+1743174164 | Game parameter change  GenerationLevel = 1
+1743174164 | Game parameter change  TemperatureLevel = -30
+1743174164 | Game parameter change  OxygenLevel = 0
+1743174164 | Game parameter change  OceanLevel = 0
+1743174164 | Game parameter change  VenusScale = 0
+1743174164 | Current Player changed to 1
+1743174164 | Player 1 parameter change Name = otomaodsiecz
+1743174164 | Player 1 parameter change AILevel = None
+1743174164 | Player 1 parameter change IsMe = False
+1743174164 | Current Player changed to 2
+1743174164 | Player 2 parameter change Name = sapozarom
+1743174164 | Player 2 parameter change AILevel = None
+1743174164 | Player 2 parameter change IsMe = True
+1743174164 | Current Player changed to 3
+1743174164 | Player 3 parameter change Name = Nerwosol
+1743174164 | Player 3 parameter change AILevel = None
+1743174164 | Player 3 parameter change IsMe = False
+1743174164 | Game parameter change  Is player replaced by AI = False
+1743174164 | Game parameter change  Is player order shuffled = True
+1743174196 | Player 3 MegaCredit quantity set to 42

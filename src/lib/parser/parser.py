@@ -14,14 +14,14 @@ from src.model.player import Player
 
 class Parser():
 
-    file = open("logs/Player.log", "r")
+    file = open("logs/Player_multi.log", "r")
     dbUpdater = UpdateDbTables()
 
     line_number = 0
     block_active = False
     game_in_progress = False
 
-    finish_line = 400
+    finish_line = 862
 
     # engine = create_engine("sqlite:///tmdb.db", echo=True)
     # session = Session(engine)
@@ -35,7 +35,7 @@ class Parser():
     block = []
 
     def read_lines(self):
-        file = open("logs/Player_basic.log", "r")
+        file = self.file
 
         block_active = False
 
@@ -52,8 +52,8 @@ class Parser():
 
                 # block finalization
                 if block_active:
-                    # print(self.block)
-                    self.get_block_type()
+                    print(self.block)
+                    self.analyze_block()
                     block_active = False
                     self.block = []
 
@@ -68,7 +68,7 @@ class Parser():
                 # print(self.game.current_player.action_bank)
 
                 # self.dbUpdater.create_new_game(self.game)
-                print(self.game.generations[0].reserch_phase_str)
+                # print(self.game.generations[0].reserch_phase_str)
                 print(f"finished on line {self.line_number}")
                 break
 
@@ -120,8 +120,8 @@ class Parser():
             self.create_event_record(timestamp, event_log, "w")
 
             # print line parts
-            self.print_line_parts(event_time, type_value,
-                                  operation_value, event)
+            # self.print_line_parts(event_time, type_value,
+            #                       operation_value, event)
         # initialyze players
         elif operation_value == "[GameData]" and not event.find("TM_PlayerBoardData for player") == -1:
 
@@ -279,7 +279,6 @@ class Parser():
     # create timestamp from (ISO 8601) log string
     # example: [2025-02-22T15:36:33.9801591Z]
 
-
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
         time = event_time[12:20]
@@ -305,7 +304,7 @@ class Parser():
         f.close()
 
     # ANALYZE CURRENT BLOCK SECTION
-    def get_block_type(self):
+    def analyze_block(self):
         if len(self.block) > 0:
 
             block_type: str = self.block[0]
@@ -313,11 +312,16 @@ class Parser():
             event_time = self.block[0][0:timestamp_brackets]
             timestamp = self.get_timestamp_from_event_time(event_time)
 
+            # new game creation
             if not block_type.find("Created new Game") == -1:
                 self.block_create_game(timestamp)
 
+            # starting cards
+            elif not block_type.find("Handling event") == -1 and not block_type.find("StartingCardEvent") == -1:
+                self.block_starting_card_event(timestamp)
+
     def block_create_game(self, timestamp):
-        print("New Game Created:")
+        # print("New Game Created:")
 
         for record in self.block:
             # find value in text
@@ -436,6 +440,9 @@ class Parser():
 
             if not event_log == None:
                 self.create_event_record(timestamp, event_log)
+
+    def block_starting_card_event(self, timestamp):
+        print(self.block)
 
     def get_list_split_by_coma(self, value: str):
         new_list: list = []

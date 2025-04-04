@@ -59,3 +59,12 @@
 1740030705 | Player 3 parameter change IsMe = True
 1740030705 | Game parameter change  Is player replaced by AI = False
 1740030705 | Game parameter change  Is player order shuffled = True
+1740030707 | Player 3 MegaCredit quantity set to 35
+1740030707 | Player 3 MegaCredit quantity set to 0
+1740030707 | Player 3 MegaCredit quantity set to 35
+1740030707 | Player 3 Steel production set to 2
+1740030707 | Player 3 Steel quantity set to 1
+1740030707 | Player 3 MegaCredit quantity set to 32
+1740030716 | Player 3 MegaCredit quantity set to 47
+1740030762 | Player 3 MegaCredit quantity set to 0
+1740030762 | Player 3 MegaCredit quantity set to 47

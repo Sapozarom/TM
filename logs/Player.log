@@ -12,9 +12,12 @@ Direct3D:
     Driver:   32.0.15.6094
 Begin MonoManager ReloadAssembly
 - Completed reload, in 10.766 seconds
-<RI> Initializing input.
-<RI> Input initialized.
-<RI> Initialized touch support.
+<RI> Initializing input.
+
+<RI> Input initialized.
+
+<RI> Initialized touch support.
+
 UnloadTime: 2.985000 ms
 [2025-02-22T15:35:26.7144683Z][Info][AsmoLogger] AsmoLogger initialized {"LogLevel":"Info","IsDebugBuild":false}
 [2025-02-22T15:35:26.7214782Z][Info][PlatformManager] EpicManager initialisation from config : True

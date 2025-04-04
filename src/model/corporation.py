@@ -42,6 +42,20 @@ class Corporation(ModelBase):
     t_venus: Mapped[int] = mapped_column()
     t_wild: Mapped[int] = mapped_column()
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.t_building = 0
+        self.t_city = 0
+        self.t_space = 0
+        self.t_power = 0
+        self.t_plant = 0
+        self.t_microbe = 0
+        self.t_animal = 0
+        self.t_earth = 0
+        self.t_jovian = 0
+        self.t_venus = 0
+        self.t_wild = 0
+
     # Everything = -1,
     # None = 0,
     # Beginner = 1,
