@@ -43,7 +43,7 @@ class Parser():
             self.line_number += 1
 
             # analyze lines with timestamp as main commands
-            if line.startswith("[") and line[1].isdigit() and line.endswith(": \n"):
+            if line.startswith("[") and line[1].isdigit() and (line.endswith(": \n") or line.endswith(":\n")):
 
                 # start block
                 block_active = True
@@ -52,7 +52,7 @@ class Parser():
 
                 # block finalization
                 if block_active:
-                    print(self.block)
+                    # print(self.block)
                     self.analyze_block()
                     block_active = False
                     self.block = []
@@ -278,6 +278,7 @@ class Parser():
 
     # create timestamp from (ISO 8601) log string
     # example: [2025-02-22T15:36:33.9801591Z]
+
 
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
