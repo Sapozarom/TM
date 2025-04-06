@@ -2,7 +2,7 @@ import sys
 from typing import TYPE_CHECKING
 from datetime import datetime
 import json
-from src.lib.updateDbTables.updateDbTables import UpdateDbTables
+# from src.lib.database.updateDbTables.updateDbTables import UpdateDbTables
 # from sqlalchemy.orm import Session
 # from sqlalchemy import create_engine
 
@@ -15,7 +15,7 @@ from src.model.player import Player
 class Parser():
 
     file = open("logs/Player_multi.log", "r")
-    dbUpdater = UpdateDbTables()
+    # dbUpdater = UpdateDbTables()
 
     line_number = 0
     block_active = False
@@ -279,7 +279,6 @@ class Parser():
     # create timestamp from (ISO 8601) log string
     # example: [2025-02-22T15:36:33.9801591Z]
 
-
     def get_timestamp_from_event_time(self, event_time):
         date = event_time[1:11]
         time = event_time[12:20]
@@ -443,7 +442,44 @@ class Parser():
                 self.create_event_record(timestamp, event_log)
 
     def block_starting_card_event(self, timestamp):
-        print(self.block)
+
+        # tab_pos = self.block[1][1:].find("\t")
+        # action_block_type = self.block[1][1:tab_pos+1]
+        action_block_type = "StartingCardEvent"
+
+        card_selection = False
+        prelude_selection = False
+        hand = []
+        prelude = []
+
+        for x in self.block[1:]:
+
+            line: str = x[1:]
+
+            # print(line)
+            if not line.find('ProxyPlayerLocalID') == -1:
+                value = int(line[line.find(":")+1:])
+                self.game.current_player_number = value
+                # print(self.game.current_player)
+                # get player id
+            elif not line.find('Corporation') == -1:
+                value = int(line[line.find(":")+1:])
+                self.game.current_player.setCorporation(value)
+
+            elif not line.find('SelectedCards') == -1:
+                card_selection = True
+
+            elif not line.find('SelectedPreludeCards') == -1:
+                card_selection = False
+                prelude_selection = True
+
+            elif not line.isnumeric():
+                if card_selection:
+                    hand.append(int(line))
+                elif prelude_selection:
+                    prelude.append(int(line))
+        print(hand)
+        print(prelude)
 
     def get_list_split_by_coma(self, value: str):
         new_list: list = []

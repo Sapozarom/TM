@@ -1,7 +1,7 @@
 import sys
 
-from src.lib.createDbTables.createDbTables import CreateDbTables
-from src.lib.updateDbConst.updateDbConst import UpdateDbConst
+from src.lib.database.createDbTables.createDbTables import CreateDbTables
+from src.lib.database.updateDbConst.updateDbConst import UpdateDbConst
 
 
 def main():

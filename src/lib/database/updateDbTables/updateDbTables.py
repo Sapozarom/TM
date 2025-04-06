@@ -32,7 +32,7 @@ class UpdateDbTables():
         B_08.bottom_text = "You start with 40 M€. As your first action in the game, place a city tile."
         B_08.top_text = "Effect: When any city tile is placed ON MARS, increase your M€ production 1 step. When you place a city tile, gain 3 M€."
         B_08.picto = ""
-        B_08.mega_credits = 42
+        B_08.mega_credits = 40
         B_08.t_building = 1
 
         PC_1 = Corporation()
@@ -44,7 +44,7 @@ class UpdateDbTables():
         PC_1.mega_credits = 44
         PC_1.t_building = 1
 
-        corp = [B_03, B_08, PC_1]
+        corp = {4: B_03, 13: B_08, 14: PC_1}
 
         with Session(self.engine) as session:
             session.add_all([corp])

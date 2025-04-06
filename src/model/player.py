@@ -11,6 +11,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Session
 from src.model.modelBase import ModelBase
 from src.model.corporation import Corporation
+from src.lib.database.getFromDatabase.getFromDb import GetFromDb
 if TYPE_CHECKING:
     from src.model.game import Game
 
@@ -62,6 +63,11 @@ class Player(ModelBase):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+
+    def setCorporation(self, corporation_id):
+        getFromDb = GetFromDb()
+        corp = getFromDb.getCorporationById(corporation_id)
+        self.corporation = corp
 
     def __repr__(self):
         return f"Player named '{self.name}' and number {self.number}\n" \
